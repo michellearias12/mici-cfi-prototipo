@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel Interno — Sistema CFI · MICI</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0D2B55;--teal:#0E7C6E;--teal-m:#1D9E75;--teal-l:#E1F5EE;--bg:#F7F8FA;--border:#D3D1C7;--text:#1a1a1a;--muted:#5F5E5A;--red:#E24B4A;--red-l:#FCEBEB;--green:#3B6D11;--green-l:#EAF3DE;--amber:#854F0B;--amber-l:#FAEEDA;--blue:#185FA5;--blue-l:#E6F1FB;--purple:#3C3489;--purple-l:#EEEDFE}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);font-size:13px;display:flex;flex-direction:column;min-height:100vh}
+.layout{display:flex;flex:1}
+.sb{width:220px;min-height:100vh;background:var(--navy);display:flex;flex-direction:column;flex-shrink:0}
+.sb-logo{padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.1)}
+.sb-logo h1{font-size:13px;font-weight:500;color:#fff}
+.sb-logo p{font-size:10px;color:rgba(255,255,255,.4);margin-top:2px}
+.rp{margin:10px 12px;background:rgba(255,255,255,.08);border-radius:6px;padding:8px 10px;display:flex;align-items:center;gap:8px}
+.rav{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;color:#fff;flex-shrink:0}
+.rn{font-size:12px;font-weight:500;color:#fff}
+.rt{font-size:10px;color:rgba(255,255,255,.45)}
+.sbs{padding:10px 14px 4px;font-size:10px;color:rgba(255,255,255,.3);font-weight:500;letter-spacing:.05em;text-transform:uppercase}
+.ni{display:flex;align-items:center;gap:8px;padding:7px 14px;cursor:pointer;color:rgba(255,255,255,.6);font-size:12px;border-left:2px solid transparent;text-decoration:none;transition:all .15s}
+.ni:hover{background:rgba(255,255,255,.06);color:#fff}
+.ni.act{background:rgba(14,124,110,.2);border-left-color:var(--teal-m);color:#fff}
+.ni .bc{margin-left:auto;background:var(--red);color:#fff;font-size:10px;padding:1px 6px;border-radius:8px}
+.ni .dot{width:7px;height:7px;border-radius:50%;margin-left:auto;flex-shrink:0}
+.main{flex:1;display:flex;flex-direction:column;min-width:0}
+.topbar{background:#fff;border-bottom:.5px solid var(--border);padding:10px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.topbar h2{font-size:15px;font-weight:500;color:var(--navy)}
+.acts{display:flex;gap:8px}
+.btn{padding:6px 14px;border-radius:6px;font-size:12px;font-family:'DM Sans',sans-serif;cursor:pointer;border:.5px solid var(--border);background:#fff;color:var(--text);text-decoration:none;display:inline-flex;align-items:center;gap:5px}
+.btn-t{background:var(--teal);color:#fff;border-color:var(--teal)}
+.btn-t:hover{background:#0a6557}
+.ct{padding:16px 20px}
+.sr{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.sc{background:#fff;border:.5px solid var(--border);border-radius:8px;padding:12px 14px}
+.sc .sl{font-size:11px;color:var(--muted);margin-bottom:4px}
+.sc .sv{font-size:22px;font-weight:500;color:var(--navy)}
+.sc .sa{font-size:11px;margin-top:2px}
+.card{background:#fff;border:.5px solid var(--border);border-radius:8px;margin-bottom:12px;overflow:hidden}
+.ch{padding:10px 16px;border-bottom:.5px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.ch h3{font-size:13px;font-weight:500;color:var(--navy)}
+.cb{padding:16px}
+.pill{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:500}
+.p-recv{background:var(--blue-l);color:var(--blue)}
+.p-eval{background:var(--amber-l);color:var(--amber)}
+.p-visit{background:#FAEEDA;color:#633806}
+.p-conapi{background:var(--purple-l);color:var(--purple)}
+.p-resol{background:var(--teal-l);color:var(--teal)}
+.p-done{background:var(--green-l);color:var(--green)}
+.p-obs{background:var(--red-l);color:#A32D2D}
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{background:var(--bg);padding:7px 12px;font-size:11px;font-weight:500;color:var(--muted);text-align:left;border-bottom:.5px solid var(--border)}
+.tbl td{padding:8px 12px;border-bottom:.5px solid var(--border);font-size:12px;vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:var(--bg)}
+.act-btn{padding:4px 10px;border-radius:4px;font-size:11px;font-family:'DM Sans',sans-serif;cursor:pointer;border:.5px solid var(--teal);background:#fff;color:var(--teal);text-decoration:none}
+.act-btn:hover{background:var(--teal-l)}
+.stit{font-size:11px;font-weight:500;color:var(--navy);border-bottom:1px solid var(--teal-l);padding-bottom:5px;margin-bottom:10px;margin-top:2px}
+.fg label{font-size:12px;color:var(--muted);display:block;margin-bottom:4px;font-weight:500}
+.fg input,.fg select,.fg textarea{width:100%;padding:7px 10px;border:.5px solid var(--border);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text);outline:none}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--teal);box-shadow:0 0 0 2px rgba(14,124,110,.12)}
+.fg textarea{resize:vertical;min-height:68px}
+.fr{display:grid;gap:10px;margin-bottom:10px}
+.c2{grid-template-columns:1fr 1fr}
+.c3{grid-template-columns:1fr 1fr 1fr}
+.alb{background:var(--teal-l);border:.5px solid var(--teal-m);border-radius:6px;padding:10px 12px;font-size:11px;color:#085041;line-height:1.5;margin-bottom:12px;display:flex;gap:8px}
+.inv-tbl{width:100%;border-collapse:collapse;font-size:11px}
+.inv-tbl th{background:var(--navy);color:#fff;padding:5px 8px;text-align:left;font-weight:500}
+.inv-tbl td{padding:5px 8px;border-bottom:.5px solid var(--border)}
+.tl-row{display:flex;gap:12px;padding:8px 0;border-bottom:.5px solid var(--border);align-items:flex-start}
+.tl-row:last-child{border-bottom:none}
+.tl-ic{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px}
+.ic-done{background:var(--green-l);color:var(--green)}
+.ic-act{background:var(--teal-l);color:var(--teal)}
+.ic-pend{background:var(--bg);color:var(--muted);border:.5px dashed var(--border)}
+.tl-ti{font-size:12px;font-weight:500}
+.tl-su{font-size:11px;color:var(--muted)}
+.dp{background:#fff;border:.5px solid var(--border);border-radius:8px;margin-bottom:12px}
+.dp-hd{background:var(--navy);padding:12px 16px;border-radius:8px 8px 0 0;display:flex;align-items:center;justify-content:space-between}
+.dp-hd h3{font-size:13px;font-weight:500;color:#fff}
+.dp-bd{padding:16px}
+.ci{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;background:var(--bg);border-radius:6px;margin-bottom:6px;font-size:12px}
+.ci-l{display:flex;align-items:center;gap:8px}
+.acta{background:#fff;border:1px solid var(--border);border-radius:8px;padding:16px;font-size:12px;line-height:1.8;margin-bottom:12px}
+.acta h3{text-align:center;font-size:13px;font-weight:500;color:var(--navy);margin-bottom:10px}
+</style>
+</head>
+<body>
+<div class="layout">
+<div class="sb">
+  <div class="sb-logo"><h1>MICI — Sistema CFI</h1><p>Panel de Funcionarios</p></div>
+  <div class="rp">
+    <div class="rav" id="r-av" style="background:var(--teal-m)">SC</div>
+    <div><div class="rn" id="r-name">Ana González</div><div class="rt" id="r-title">Secretaria CFI</div></div>
+  </div>
+  <div class="sbs">Cambiar rol</div>
+  <a class="ni act" href="#" onclick="setRole('sec',this)">📥 Secretaria CFI</a>
+  <a class="ni" href="#" onclick="setRole('ana',this)">📋 Analista Industrial</a>
+  <a class="ni" href="#" onclick="setRole('cpa',this)">🧮 Contador (CPA)</a>
+  <a class="ni" href="#" onclick="setRole('jef',this)">🛡 Jefe de Depto.</a>
+  <a class="ni" href="#" onclick="setRole('dir',this)">📜 Director DGI</a>
+  <a class="ni" href="#" onclick="setRole('leg',this)">⚖ Asesor Legal</a>
+  <div class="sbs" style="margin-top:8px">Vistas</div>
+  <a class="ni act" href="#">🏠 Mi bandeja</a>
+  <a class="ni" href="#">📁 Todos los expedientes <span class="bc">24</span></a>
+  <a class="ni" href="#">📅 Visitas técnicas</a>
+  <a class="ni" href="#">📊 Reportes</a>
+  <div style="margin-top:auto;padding:14px 16px;border-top:1px solid rgba(255,255,255,.1)">
+    <a href="index.html" style="font-size:11px;color:rgba(255,255,255,.5);text-decoration:none">← Portal ciudadano</a><br>
+    <a href="portal-conapi.html" style="font-size:11px;color:rgba(255,255,255,.5);text-decoration:none">→ Portal CONAPI</a>
+  </div>
+</div>
+
+<div class="main">
+  <div class="topbar">
+    <h2 id="panel-title">Bandeja — Secretaria CFI</h2>
+    <div class="acts">
+      <a class="btn" href="index.html">Ver portal ciudadano</a>
+      <button class="btn btn-t" id="btn-prim">+ Nueva recepción</button>
+    </div>
+  </div>
+  <div class="ct" id="ct"></div>
+</div>
+</div>
+
+<script>
+var role='sec';
+var exps=[
+  {id:'CFI-2025-0412',emp:'Industrias Tropicales S.A.',rl:'Carlos Méndez',mod:'Inversión/Reinversión',inv:285000,cfi:114000,est:'recibido',dias:2,prov:'Panamá'},
+  {id:'CFI-2025-0398',emp:'Alimentos del Pacífico S.A.',rl:'María Torres',mod:'Investigación y Desarrollo',inv:145000,cfi:58000,est:'evaluacion',dias:10,prov:'Chiriquí'},
+  {id:'CFI-2025-0371',emp:'Plásticos Nacionales S.A.',rl:'Roberto Sánchez',mod:'Gestión Ambiental',inv:320000,cfi:128000,est:'visita',dias:20,prov:'Colón'},
+  {id:'CFI-2025-0355',emp:'Textiles Panamá S.A.',rl:'Lucía Pérez',mod:'Capacitación RRHH',inv:95000,cfi:38000,est:'conapi',dias:32,prov:'Panamá'},
+  {id:'CFI-2025-0340',emp:'Farmacéutica Nacional S.A.',rl:'Jorge Díaz',mod:'Sistemas de Calidad',inv:210000,cfi:84000,est:'resolucion',dias:45,prov:'Panamá'},
+  {id:'CFI-2025-0321',emp:'Metalmecánica del Istmo S.A.',rl:'Ana Castillo',mod:'Inversión/Reinversión',inv:450000,cfi:180000,est:'emitido',dias:60,prov:'Colón'},
+];
+var roles={
+  sec:{name:'Ana González',title:'Secretaria CFI',av:'SC',col:'var(--teal-m)',label:'+ Nueva recepción',title2:'Bandeja — Secretaria CFI',allowed:['recibido','evaluacion','observado']},
+  ana:{name:'Luis Ramos',title:'Analista Industrial',av:'LR',col:'#185FA5',label:'+ Nuevo informe',title2:'Bandeja — Analista Industrial',allowed:['evaluacion','visita']},
+  cpa:{name:'Pedro Vásquez',title:'Contador Público Autorizado',av:'PV',col:'#854F0B',label:'+ Revisar detalle',title2:'Bandeja — CPA',allowed:['evaluacion','visita']},
+  jef:{name:'Dra. Carmen Ruiz',title:'Jefa de Evaluación Industrial',av:'CR',col:'#534AB7',label:'Ver resumen',title2:'Bandeja — Jefe de Departamento',allowed:['visita','conapi','resolucion']},
+  dir:{name:'Lic. Roberto Alvarado',title:'Director General de Industrias',av:'RA',col:'#0D2B55',label:'Firmar resolución',title2:'Bandeja — Director DGI',allowed:['resolucion','emitido']},
+  leg:{name:'Abog. Sandra Mora',title:'Asesora Legal',av:'SM',col:'#993C1D',label:'Revisar viabilidad',title2:'Bandeja — Asesor Legal',allowed:['resolucion']},
+};
+function setRole(r,el){
+  role=r;
+  var rd=roles[r];
+  document.getElementById('r-av').textContent=rd.av;
+  document.getElementById('r-av').style.background=rd.col;
+  document.getElementById('r-name').textContent=rd.name;
+  document.getElementById('r-title').textContent=rd.title;
+  document.getElementById('panel-title').textContent=rd.title2;
+  document.getElementById('btn-prim').textContent=rd.label;
+  document.querySelectorAll('.ni').forEach(function(n){n.classList.remove('act');});
+  if(el){el.classList.add('act');}
+  renderMain();
+  return false;
+}
+function pill(e){
+  var m={recibido:'<span class="pill p-recv">Recibido</span>',evaluacion:'<span class="pill p-eval">En evaluación</span>',visita:'<span class="pill p-visit">Visita técnica</span>',conapi:'<span class="pill p-conapi">En CONAPI</span>',resolucion:'<span class="pill p-resol">En resolución</span>',emitido:'<span class="pill p-done">CFI Emitido</span>',observado:'<span class="pill p-obs">Con observaciones</span>'};
+  return m[e]||e;
+}
+function fmtNum(n){return 'B/. '+n.toLocaleString();}
+function renderMain(){
+  var rd=roles[role];
+  var filtered=exps.filter(function(e){return rd.allowed.indexOf(e.est)>-1;});
+  var totCFI=exps.reduce(function(a,e){return a+e.cfi;},0);
+  var emitidos=exps.filter(function(e){return e.est==='emitido';}).length;
+  var ct=document.getElementById('ct');
+  var html='<div class="sr">'
+    +'<div class="sc"><div class="sl">En mi bandeja</div><div class="sv">'+filtered.length+'</div><div class="sa" style="color:var(--muted)">expedientes activos</div></div>'
+    +'<div class="sc"><div class="sl">Total sistema 2025</div><div class="sv">'+exps.length+'</div><div class="sa" style="color:var(--muted)">expedientes</div></div>'
+    +'<div class="sc"><div class="sl">CFI emitidos</div><div class="sv">'+emitidos+'</div><div class="sa" style="color:var(--green)">este año</div></div>'
+    +'<div class="sc"><div class="sl">Monto CFI total</div><div class="sv">B/.'+Math.round(totCFI/1000)+'K</div><div class="sa" style="color:var(--muted)">crédito fiscal</div></div>'
+    +'</div>'
+    +'<div class="card"><div class="ch"><h3>Expedientes en mi bandeja</h3><span style="font-size:11px;color:var(--muted)">'+filtered.length+' resultado(s)</span></div>'
+    +'<table class="tbl"><thead><tr><th>N° Expediente</th><th>Empresa</th><th>Modalidad</th><th>Inversión</th><th>CFI est.</th><th>Estado</th><th>Días</th><th>Acción</th></tr></thead><tbody>'
+    +filtered.map(function(e){
+      var dc=e.dias>30?'color:var(--red)':e.dias>15?'color:var(--amber)':'color:var(--green)';
+      return '<tr><td><strong style="color:var(--navy)">'+e.id+'</strong></td>'
+        +'<td>'+e.emp+'<br><span style="font-size:10px;color:var(--muted)">'+e.rl+' · '+e.prov+'</span></td>'
+        +'<td style="font-size:11px">'+e.mod+'</td>'
+        +'<td>'+fmtNum(e.inv)+'</td>'
+        +'<td style="color:var(--teal);font-weight:500">'+fmtNum(e.cfi)+'</td>'
+        +'<td>'+pill(e.est)+'</td>'
+        +'<td><span style="font-size:11px;'+dc+'">'+e.dias+'d</span></td>'
+        +'<td><button class="act-btn" onclick="openExp(\''+e.id+'\')">Abrir</button></td></tr>';
+    }).join('')+'</tbody></table></div>'
+    +rolePanel();
+  ct.innerHTML=html;
+}
+
+function rolePanel(){
+  if(role==='sec')return panelSec();
+  if(role==='ana')return panelAna();
+  if(role==='cpa')return panelCPA();
+  if(role==='jef')return panelJef();
+  if(role==='dir')return panelDir();
+  if(role==='leg')return panelLeg();
+  return '';
+}
+
+function panelSec(){return '<div class="dp"><div class="dp-hd"><h3>Recepción — CFI-2025-0412 · Industrias Tropicales S.A.</h3></div><div class="dp-bd"><div class="stit">Verificación de documentos recibidos</div>'
+  +['Formulario de Solicitud CFI','Certificado de Registro Público','Cédula RL autenticada (Tribunal Electoral)','Estados Financieros firmados por CPA','Paz y Salvo Municipal','Paz y Salvo CSS','Paz y Salvo Nacional','Aviso de Operación','Declaración Notarial Jurada beneficiarios','Informe de inversión CPA','Detalle de facturas (Excel MICI)'].map(function(d,i){
+    var ok=i<8;
+    return '<div class="ci"><div class="ci-l"><input type="checkbox" '+(ok?'checked':'')+' style="accent-color:var(--teal)">'+d+'</div><span class="pill '+(ok?'p-done':'p-eval')+'" style="font-size:10px">'+(ok?'✓ Completo':'Pendiente')+'</span></div>';}).join('')
+  +'<div class="stit" style="margin-top:12px">Asignación</div>'
+  +'<div class="fr c3"><div class="fg"><label>N° de folios</label><input type="number" value="42"></div><div class="fg"><label>Analista Industrial</label><select><option>Luis Ramos</option><option>Marta López</option></select></div><div class="fg"><label>Contador (CPA)</label><select><option>Pedro Vásquez</option><option>Julia Moreno</option></select></div></div>'
+  +'<div class="fg"><label>Observaciones</label><textarea placeholder="Documentación completa. Se asigna a evaluación..."></textarea></div>'
+  +'<div style="display:flex;gap:8px;margin-top:8px"><button class="btn btn-t">✓ Confirmar recepción y asignar</button><button class="btn" style="color:var(--red);border-color:var(--red)">✗ Devolver por incompleto</button></div>'
+  +'</div></div>';}
+
+function panelAna(){return '<div class="dp"><div class="dp-hd"><h3>Informe técnico — CFI-2025-0398 · Alimentos del Pacífico S.A.</h3></div><div class="dp-bd"><div class="stit">Agenda de visita técnica</div>'
+  +'<div class="fr c3"><div class="fg"><label>Fecha de visita</label><input type="date" value="2025-06-05"></div><div class="fg"><label>Hora</label><input type="time" value="09:00"></div><div class="fg"><label>Analistas</label><input value="Luis Ramos, Pedro Vásquez"></div></div>'
+  +'<div class="alb">Al confirmar, se enviará notificación automática al Representante Legal con la fecha, hora y requisitos para la visita técnica.</div>'
+  +'<div class="stit">Informe de visita técnica</div>'
+  +'<div class="fr c2"><div class="fg"><label>Activos instalados y operando</label><select><option>Sí, todos</option><option>Parcialmente</option><option>No</option></select></div><div class="fg"><label>Personal presente</label><input placeholder="Nombre, cargo"></div></div>'
+  +'<div class="fg"><label>Observaciones de visita</label><textarea placeholder="Descripción de lo observado en planta..."></textarea></div>'
+  +'<div class="stit" style="margin-top:8px">Informe técnico</div>'
+  +'<div class="fr c2"><div class="fg"><label>Inversión verificada (B/.)</label><input type="number" value="145000"></div><div class="fg"><label>CFI recomendado (B/.)</label><input type="number" value="58000" readonly style="background:var(--teal-l);color:var(--teal);font-weight:500"></div></div>'
+  +'<div class="fg"><label>Concepto del analista</label><select><option>Favorable — proceder con aprobación CONAPI</option><option>Favorable con observaciones</option><option>Desfavorable</option></select></div>'
+  +'<div class="fg"><label>Sustento técnico</label><textarea placeholder="Fundamento técnico y legal para la recomendación..."></textarea></div>'
+  +'<div style="display:flex;gap:8px;margin-top:8px"><button class="btn btn-t">✓ Enviar informe al Jefe de Depto.</button><button class="btn">Guardar borrador</button></div>'
+  +'</div></div>';}
+
+function panelCPA(){return '<div class="dp"><div class="dp-hd"><h3>Revisión del detalle de inversiones — CFI-2025-0398</h3></div><div class="dp-bd"><div class="stit">Detalle de inversiones declaradas</div>'
+  +'<div style="overflow-x:auto"><table class="inv-tbl"><thead><tr><th>Folio</th><th>Fecha</th><th>Tipo</th><th>N° Doc.</th><th>Proveedor</th><th>Descripción activo</th><th>Monto B/.</th><th>C</th><th>NC</th><th>Observación</th></tr></thead><tbody>'
+  +[{f:'001',fecha:'2024-03-15',t:'FF',nd:'00123',pr:'Equipos Tech S.A.',desc:'Mezcladora industrial 500L',m:'45,000.00',c:true,nc:false,obs:''},
+    {f:'002',fecha:'2024-04-02',t:'FF',nd:'00456',pr:'Equipos Tech S.A.',desc:'Banda transportadora',m:'22,500.00',c:true,nc:false,obs:''},
+    {f:'003',fecha:'2024-04-20',t:'FE',nd:'INV-789',pr:'Machinery Corp USA',desc:'Línea de empaque automática',m:'65,000.00',c:false,nc:true,obs:'Falta Declaración de Aduanas'},
+    {f:'004',fecha:'2024-05-10',t:'DA',nd:'DA-2024-001',pr:'Aduana Balboa',desc:'DA de línea de empaque',m:'2,500.00',c:true,nc:false,obs:''},
+  ].map(function(r){return '<tr><td>'+r.f+'</td><td style="white-space:nowrap">'+r.fecha+'</td><td><strong>'+r.t+'</strong></td><td>'+r.nd+'</td><td>'+r.pr+'</td><td>'+r.desc+'</td><td style="text-align:right">B/.'+r.m+'</td>'
+    +'<td style="color:var(--green);font-weight:500">'+(r.c?'✓':'')+'</td><td style="color:var(--red);font-weight:500">'+(r.nc?'✗':'')+'</td><td style="font-size:10px;color:var(--red)">'+r.obs+'</td></tr>';}).join('')
+  +'<tr style="background:var(--teal-l)"><td colspan="6" style="text-align:right;font-weight:500;font-size:12px">Total conforme</td><td style="text-align:right;font-weight:500;color:var(--teal)">B/.70,000.00</td><td colspan="3"></td></tr>'
+  +'</tbody></table></div>'
+  +'<div style="background:var(--amber-l);border:.5px solid #FAC775;border-radius:6px;padding:10px;margin:10px 0;font-size:11px;color:var(--amber)">⚠ Folio 003: Falta Declaración de Aduanas (B/.65,000). Requiere documentación antes de aprobar el monto total.</div>'
+  +'<div class="fr c2"><div class="fg"><label>Monto aprobado CPA (B/.)</label><input type="number" value="70000"></div><div class="fg"><label>Monto pendiente (B/.)</label><input type="number" value="65000" readonly style="background:var(--amber-l)"></div></div>'
+  +'<div class="fg"><label>Observaciones del CPA</label><textarea>El folio 003 requiere Declaración de Aduanas. Los demás folios cumplen con el Texto Único de la Ley N°76 de 2009.</textarea></div>'
+  +'<div style="display:flex;gap:8px;margin-top:8px"><button class="btn btn-t">✓ Emitir informe CPA</button><button class="btn" style="color:var(--amber);border-color:var(--amber)">⚠ Solicitar documentos adicionales</button></div>'
+  +'</div></div>';}
+
+function panelJef(){return '<div class="dp"><div class="dp-hd"><h3>Revisión del Jefe — CFI-2025-0355 · Textiles Panamá S.A.</h3></div><div class="dp-bd">'
+  +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">'
+  +'<div><div class="stit">Resumen del expediente</div>'
+  +[['Empresa','Textiles Panamá S.A.'],['Analista','Marta López'],['Inversión verificada','B/. 95,000.00'],['CFI recomendado','B/. 38,000.00'],['Concepto analista','Favorable']].map(function(f){return '<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:.5px solid var(--bg);font-size:12px"><span style="color:var(--muted)">'+f[0]+'</span><span style="font-weight:500">'+f[1]+'</span></div>';}).join('')+'</div>'
+  +'<div><div class="stit">Historial del expediente</div>'
+  +[['✓','ic-done','Recepción y foliado','28 abr 2025 · Ana González'],['✓','ic-done','Asignación analista + CPA','29 abr 2025'],['✓','ic-done','Visita técnica realizada','8 may 2025 · Marta López'],['✓','ic-done','Informe técnico completado','12 may 2025'],['⏱','ic-act','Revisión Jefe de Departamento','En curso'],['👥','ic-pend','Sesión CONAPI','Pendiente']].map(function(t){return '<div class="tl-row"><div class="tl-ic '+t[1]+'">'+t[0]+'</div><div><div class="tl-ti">'+t[2]+'</div><div class="tl-su">'+t[3]+'</div></div></div>';}).join('')+'</div></div>'
+  +'<div class="fg"><label>Comentarios de revisión</label><textarea>El expediente cumple con todos los requisitos. El Informe Técnico está completo y bien fundamentado. Se aprueba el envío al CONAPI.</textarea></div>'
+  +'<div style="display:flex;gap:8px;margin-top:8px"><button class="btn btn-t">✓ Aprobar y enviar al CONAPI</button><button class="btn">↩ Devolver al analista</button></div>'
+  +'</div></div>';}
+
+function panelLeg(){return '<div class="dp"><div class="dp-hd"><h3>Viabilidad legal — CFI-2025-0340 · Farmacéutica Nacional S.A.</h3></div><div class="dp-bd"><div class="stit">Lista de verificación legal</div>'
+  +[{ok:true,t:'La empresa no goza de otros beneficios fiscales del MICI (verificado en sistema)'},
+    {ok:true,t:'El Acta del CONAPI contiene las firmas de todos los participantes y el resultado de votación'},
+    {ok:true,t:'El borrador de Resolución cita correctamente el Texto Único de la Ley N°76 de 2009'},
+    {ok:true,t:'El monto del CFI no excede el 40% de la inversión calificada verificada'},
+    {ok:true,t:'La modalidad declarada corresponde al Decreto Ejecutivo N°37 del 10 de abril de 2018'},
+    {ok:false,t:'Verificar número de Resolución correlativo en el registro oficial'},
+  ].map(function(c){return '<div class="ci"><div class="ci-l"><input type="checkbox" '+(c.ok?'checked':'')+' style="accent-color:var(--teal)">'+c.t+'</div><span class="pill '+(c.ok?'p-done':'p-eval')+'" style="font-size:10px">'+(c.ok?'Conforme':'Verificar')+'</span></div>';}).join('')
+  +'<div class="fg" style="margin-top:10px"><label>Concepto legal</label><select><option>Viable — procede la firma del Director</option><option>Viable con correcciones menores</option><option>No viable — requiere subsanación</option></select></div>'
+  +'<div class="fg"><label>Observaciones del Asesor Legal</label><textarea>El expediente CFI-2025-0340 cumple con los requisitos legales del Texto Único de la Ley N°76 de 2009 y el Decreto Ejecutivo N°37 de 2018. Se emite concepto favorable para la firma del Director General de Industrias.</textarea></div>'
+  +'<div style="display:flex;gap:8px;margin-top:8px"><button class="btn btn-t">✓ Emitir viabilidad legal</button><button class="btn" style="color:var(--red);border-color:var(--red)">✗ Devolver por correcciones</button></div>'
+  +'</div></div>';}
+
+function panelDir(){return '<div class="dp"><div class="dp-hd"><h3>Resolución para firma — CFI-2025-0340 · Farmacéutica Nacional S.A.</h3></div><div class="dp-bd">'
+  +'<div class="alb">El CONAPI emitió concepto <strong>favorable</strong> en sesión del 20 de mayo de 2025. El borrador fue revisado por el Asesor Legal con viabilidad favorable. Pendiente de firma del Director.</div>'
+  +'<div class="stit">Vista previa de la Resolución</div>'
+  +'<div class="acta"><h3>REPÚBLICA DE PANAMÁ<br>MINISTERIO DE COMERCIO E INDUSTRIAS<br>DIRECCIÓN GENERAL DE INDUSTRIAS<br>CERTIFICADO DE FOMENTO INDUSTRIAL</h3>'
+  +'<p><strong>RESOLUCIÓN N° 45</strong> de 02 de junio de 2025</p>'
+  +'<p style="margin-top:8px"><strong>LA DIRECTORA GENERAL DE INDUSTRIAS</strong> en uso de sus facultades legales,</p>'
+  +'<p style="margin-top:8px"><strong>RESUELVE:</strong> Otorgar a <em>Farmacéutica Nacional S.A.</em> un Certificado de Fomento Industrial por la suma de <strong style="color:var(--teal)">B/. 84,000.00</strong> (Ochenta y cuatro mil balboas con 00/100), equivalente al 40% de la inversión calificada de B/. 210,000.00, modalidad Sistemas de Gestión y Aseguramiento de la Calidad.</p>'
+  +'<p style="margin-top:14px;text-align:right">_______________________________<br>Director General de Industrias</p></div>'
+  +'<div class="fr c2"><div class="fg"><label>N° de Resolución</label><input value="45"></div><div class="fg"><label>Fecha</label><input type="date" value="2025-06-02"></div></div>'
+  +'<div class="fg"><label>PIN de firma electrónica</label><input type="password" placeholder="••••••••"></div>'
+  +'<div style="display:flex;gap:8px;margin-top:8px"><button class="btn btn-t">✓ Firmar y emitir CFI digital</button><button class="btn">↩ Devolver al Asesor Legal</button></div>'
+  +'</div></div>';}
+
+function openExp(id){
+  var exp=exps.find(function(e){return e.id===id;});
+  if(!exp)return;
+  var ct=document.getElementById('ct');
+  ct.innerHTML='<div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">'
+    +'<button class="btn" onclick="renderMain()">← Volver</button>'
+    +'<h3 style="font-size:14px;font-weight:500;color:var(--navy)">'+exp.id+' · '+exp.emp+'</h3>'
+    +pill(exp.est)+'</div>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">'
+    +'<div class="card"><div class="ch"><h3>Datos del expediente</h3></div><div class="cb">'
+    +[['Empresa',exp.emp],['Representante legal',exp.rl],['Modalidad',exp.mod],['Provincia',exp.prov],['Inversión declarada',fmtNum(exp.inv)],['CFI estimado (40%)',fmtNum(exp.cfi)],['Días en trámite',exp.dias+' días']].map(function(f){return '<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:.5px solid var(--bg);font-size:12px"><span style="color:var(--muted)">'+f[0]+'</span><span style="font-weight:500">'+f[1]+'</span></div>';}).join('')
+    +'</div></div>'
+    +'<div class="card"><div class="ch"><h3>Línea de tiempo</h3></div><div class="cb">'
+    +[['✓','ic-done','Solicitud recibida'],['✓','ic-done','Asignación analista + CPA'],['✓','ic-done','Visita técnica'],['✓','ic-done','Informe técnico al CONAPI'],
+      [(['resolucion','emitido'].indexOf(exp.est)>-1?'✓':'⏱'),(['resolucion','emitido'].indexOf(exp.est)>-1?'ic-done':'ic-pend'),'Sesión CONAPI'],
+      [(exp.est==='emitido'?'✓':'⏱'),(exp.est==='emitido'?'ic-done':'ic-pend'),'Resolución y CFI emitido'],
+    ].map(function(t){return '<div class="tl-row"><div class="tl-ic '+t[1]+'">'+t[0]+'</div><div><div class="tl-ti">'+t[2]+'</div></div></div>';}).join('')
+    +'</div></div></div>'
+    +rolePanel();
+}
+
+renderMain();
+</script>
+</body>
+</html>
